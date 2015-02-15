@@ -1,6 +1,8 @@
 # WPGen
 Android app which can generate solid color or diagonal gradient multicolor wallpapers. You can choose from a number of pre-defined colors or add your own.
 
+This app is designed for Android 4.0.3 and later.
+
 ## Screenshots
 
 [![t1]][1] [![t2]][2] [![t3]][3] [![t4]][4] [![t5]][5]
