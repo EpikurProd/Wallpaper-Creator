@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WPGen</string>
+
+    <string name="action_add_color">Добавить цвет</string>
+    <string name="action_add_to_favs">В избранное</string>
+    <string name="action_blur">Создать градиентные обои</string>
+    <string name="action_remove_from_favs">Удалить из избранного</string>
+    <string name="action_settings">Настройки</string>
+
+    <plurals name="plurals_colors">
+        <item quantity="one">Выбран %d цвет</item>
+        <item quantity="few">Выбраны %d цвета</item>
+        <item quantity="many">Выбраны %d цветов</item>
+        <item quantity="other">Выбраны %d цветов</item>
+    </plurals>
+
+    <string name="dialog_add_color_title">Добавить цвет</string>
+    <string name="dialog_add_color_msg">Шестнадцатеричный код (#ККЗЗСС)</string>
+
+    <string name="label_cancel">Отмена</string>
+    <string name="label_ok">ОК</string>
+
+    <string name="toast_fav_added">Добавлен в избранное</string>
+    <string name="toast_fav_removed">Удалён из избранного</string>
+    <string name="toast_invalid_color">Неверный код цвета</string>
+    <string name="toast_wallpaper_set_to_blur">Установлены градиентные обои</string>
+    <string name="toast_wallpaper_set_to_color">Установлены однотонные обои</string>
+</resources>
