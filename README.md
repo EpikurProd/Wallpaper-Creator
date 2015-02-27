@@ -19,7 +19,10 @@ This app is designed for Android 4.0.3 and later.
 
 ## Download
 
-Coming soon.
+[![t6]][6]
+
+[t6]: http://glsk.net/wp-content/uploads/2013/08/get_it_on_f-droid_45.png
+[6]: https://f-droid.org/repository/browse/?fdid=net.glsk.wpgen
 
 ## Changelog
 
