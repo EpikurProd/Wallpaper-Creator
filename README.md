@@ -32,7 +32,7 @@ This app is designed for Android 4.0.3 and later.
 
 ## Donations
 
-Bitcoin: [16qE3ae8GmSwwaVodXyu76iAThR7GtyrTW](bitcoin:16qE3ae8GmSwwaVodXyu76iAThR7GtyrTW?label=glsk/wpgen)
+Bitcoin: [`16qE3ae8GmSwwaVodXyu76iAThR7GtyrTW`](bitcoin:16qE3ae8GmSwwaVodXyu76iAThR7GtyrTW?label=glsk/wpgen)
 
 ## License
 
