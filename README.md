@@ -29,8 +29,12 @@ This app is designed for Android 4.0.3 and later.
 1.0
 
  * Initial release.
- 
- ## License
+
+## Donations
+
+[![Donate Bitcoins](http://glsk.net/wp-content/uploads/2015/03/bitcoin_donate.png)](bitcoin:16qE3ae8GmSwwaVodXyu76iAThR7GtyrTW?label=glsk/wpgen)
+
+## License
 
 Copyright (c) 2015 Alexander Inglessi (http://glsk.net).
 
