@@ -1,11 +1,11 @@
 # WPGen
-Android app which can generate solid color or diagonal gradient multicolor wallpapers. You can choose from a number of pre-defined colors or add your own.
+Android app which can generate solid color, diagonal gradient or plasma effect static multicolor wallpapers. You can choose from a number of pre-defined colors or add your own.
 
 This app is designed for Android 4.0.3 and later.
 
 ## Screenshots
 
-[![t1]][1] [![t2]][2] [![t3]][3] [![t4]][4] [![t5]][5]
+[![t1]][1] [![t2]][2] [![t3]][3] [![t4]][4] [![t5]][5] [![t6]][6]
 [1]: http://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-06.png
 [t1]: http://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-06-180x300.png
 [2]: http://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-31.png
@@ -16,15 +16,23 @@ This app is designed for Android 4.0.3 and later.
 [t4]: http://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-16-25-180x300.png
 [5]: http://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-20-45.png
 [t5]: http://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-20-45-180x300.png
+[6]: http://glsk.net/wp-content/uploads/2015/10/Screenshot_2015-10-31-18-01-33.png
+[t6]: http://glsk.net/wp-content/uploads/2015/10/Screenshot_2015-10-31-18-01-33-180x300.png
 
 ## Download
 
-[![t6]][6]
+[![t10]][10]
 
-[t6]: http://glsk.net/wp-content/uploads/2013/08/get_it_on_f-droid_45.png
-[6]: https://f-droid.org/repository/browse/?fdid=net.glsk.wpgen
+[t10]: http://glsk.net/wp-content/uploads/2013/08/get_it_on_f-droid_45.png
+[10]: https://f-droid.org/repository/browse/?fdid=net.glsk.wpgen
 
 ## Changelog
+
+1.1
+
+ * Added basic plasma effect generator.
+ * Increased gradient wallpaper size to allow scrolling.
+ * Added progress dialog.
 
 1.0
 
