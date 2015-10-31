@@ -18,19 +18,24 @@
 package net.glsk.wpgen;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -47,8 +52,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 public class ColorsActivity extends ActionBarActivity {
 
@@ -57,6 +67,12 @@ public class ColorsActivity extends ActionBarActivity {
     ArrayList<String> favsList = new ArrayList<>();
     ArrayList<String> allList = new ArrayList<>();
     ArrayList<String> selectedList = new ArrayList<>();
+
+    static final int NOISE_SPREAD = 6;
+    static final int NOISE_BITMAP_SIZE = 64;
+
+    static final int SET_GRADIENT = 1;
+    static final int SET_PLASMA = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +110,7 @@ public class ColorsActivity extends ActionBarActivity {
                 return true;
             case R.id.action_add_color: // Show add color dialog.
                 AlertDialog.Builder addColorDialog = new AlertDialog.Builder(this);
-                addColorDialog.setTitle(R.string.dialog_add_color_title);
+                //addColorDialog.setTitle(R.string.dialog_add_color_title);
                 addColorDialog.setMessage(R.string.dialog_add_color_msg);
                 final EditText input = new EditText(this);
                 addColorDialog.setView(input);
@@ -145,11 +161,11 @@ public class ColorsActivity extends ActionBarActivity {
         }
     }
 
-    // Set wallpaper to blurred image.
-    protected void setBlurWallpaper(ArrayList<String> colors) {
+    // Set wallpaper to gradient image.
+    protected void setGradientWallpaper(ArrayList<String> colors) {
         WallpaperManager wpManager = WallpaperManager.getInstance(this.getApplicationContext());
-        // Use half screen size to reduce memory usage.
-        int height = (int) (wpManager.getDesiredMinimumHeight() / 2);
+        // Use full screen size so wallpaper is movable.
+        int height = (int) (wpManager.getDesiredMinimumHeight());
         // Create square bitmap for wallpaper.
         Bitmap wallpaperBitmap = Bitmap.createBitmap(height, height, Bitmap.Config.ARGB_8888);
         // Prepare colors for gradient.
@@ -164,13 +180,82 @@ public class ColorsActivity extends ActionBarActivity {
         paint.setShader(gradientShader);
         // Draw gradient on bitmap.
         c.drawRect(0, 0, height, height, paint);
+        // Add noise.
+        //addNoise(wallpaperBitmap);
         try {
             // Set wallpaper.
             wpManager.setBitmap(wallpaperBitmap);
-            String text = getString(R.string.toast_wallpaper_set_to_blur);
-            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Cleanup.
+        wallpaperBitmap.recycle();
+    }
+
+    // Set wallpaper to plasma image.
+    protected void setPlasmaWallpaper(ArrayList<String> colors) {
+        WallpaperManager wpManager = WallpaperManager.getInstance(this.getApplicationContext());
+        // Use half screen size for speed.
+        int height = wpManager.getDesiredMinimumHeight()/2;
+        int width = height;
+        // Create wallpaper bitmap.
+        Bitmap wallpaperBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        // Prepare colors for gradient.
+        int[] colorsInt = new int[colors.size()];
+        for (int i = 0; i < colors.size(); i++) {
+            colorsInt[i] = Color.parseColor(colors.get(i));
+        }
+        // Create gradient to construct palette.
+        Paint paint = new Paint();
+        Bitmap gradientBitmap = Bitmap.createBitmap(256, 1, Bitmap.Config.ARGB_8888);
+        Shader gradientShader = new LinearGradient(0, 0, 255, 0, colorsInt, null, Shader.TileMode.MIRROR);
+        Canvas c = new Canvas(gradientBitmap);
+        paint.setShader(gradientShader);
+        // Draw gradient on bitmap.
+        c.drawRect(0, 0, 256, 1, paint);
+        int[] palette = new int[256];
+        //
+        for(int x = 0; x < 256; x++) {
+            palette[x] = gradientBitmap.getPixel(x, 0);
+        }
+        // Cleanup.
+        gradientBitmap.recycle();
+
+        // Generate plasma.
+        int[][] plasma = new int[width][height];
+        Random random = new Random();
+        // TODO: add n (and maybe spread) as parameter in Settings.
+        double n = 1.3;  // Number of periods per wallpaper width.
+        double period = width / (n * 2 * 3.14);
+        double spread = period * 0.3;
+        double period1 = period - spread + spread*random.nextFloat();
+        double period2 = period - spread + spread*random.nextFloat();
+        double period3 = period - spread + spread*random.nextFloat();
+        for(int x = 0; x < width; x++)
+            for(int y = 0; y < height; y++)
+            {
+                // Adding sines to get plasma value.
+                int value = (int)
+                (
+                        128.0 + (128.0 * Math.sin(x / period1))
+                                + 128.0 + (128.0 * Math.sin(y / period2))
+                                + 128.0 + (128.0 * Math.sin((x + y) / period1))
+                                + 128.0 + (128.0 * Math.sin(Math.sqrt((double) (x * x + y * y)) / period3))
+                ) / 4;
+                plasma[x][y] = value;
+            }
+
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++) {
+                int color = palette[plasma[x][y] % 256];
+                wallpaperBitmap.setPixel(x, y, color);
+            }
+        // TODO: Add noise as option in Settings.
+        //addNoise(wallpaperBitmap);
+        wallpaperBitmap = Bitmap.createScaledBitmap(wallpaperBitmap, wpManager.getDesiredMinimumHeight(), wpManager.getDesiredMinimumHeight(), true);
+        try {
+            // Set wallpaper.
+            wpManager.setBitmap(wallpaperBitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -225,18 +310,35 @@ public class ColorsActivity extends ActionBarActivity {
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            if (selectedList.size() > 1)
-                menu.findItem(R.id.action_create_blur).setVisible(true);
-            else
-                menu.findItem(R.id.action_create_blur).setVisible(false);
+            if (selectedList.size() > 1) {
+                menu.findItem(R.id.action_create_gradient).setVisible(true);
+                menu.findItem(R.id.action_create_plasma).setVisible(true);
+            } else {
+                menu.findItem(R.id.action_create_gradient).setVisible(false);
+                menu.findItem(R.id.action_create_plasma).setVisible(false);
+            }
             return true;
         }
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            AsyncTaskParams params;
+            SetWallpaperTask asyncTask;
+            String[] selectedArray = selectedList.toArray(new String[selectedList.size()]);
             switch (item.getItemId()) {
-                case R.id.action_create_blur:
-                    setBlurWallpaper(selectedList);
+                case R.id.action_create_gradient:
+                    //setGradientWallpaper(selectedList);
+                    params = new AsyncTaskParams(selectedArray, SET_GRADIENT);
+                    asyncTask = new SetWallpaperTask(ColorsActivity.this);
+                    Log.d("onClick", "colors: " + params.colors);
+                    asyncTask.execute(params);
+                    mode.finish();
+                    return true;
+                case R.id.action_create_plasma:
+                    params = new AsyncTaskParams(selectedArray, SET_PLASMA);
+                    asyncTask = new SetWallpaperTask(ColorsActivity.this);
+                    Log.d("onClick", "colors: " + params.colors);
+                    asyncTask.execute(params);
                     mode.finish();
                     return true;
                 default:
@@ -271,6 +373,64 @@ public class ColorsActivity extends ActionBarActivity {
             Resources res = getResources();
             mode.setTitle(res.getQuantityString(R.plurals.plurals_colors, selectCount, selectCount));
             mode.invalidate(); // Invalidate to call onPrepareActionMode.
+        }
+    }
+
+    private static class AsyncTaskParams {
+        String[] colors;
+        int operation;
+        AsyncTaskParams(String[] colors, int operation) {
+            this.colors = colors;
+            this.operation = operation;
+        }
+    }
+
+    private class SetWallpaperTask extends AsyncTask<AsyncTaskParams, Void, String> {
+        private ProgressDialog progressDialog;
+        Context context;
+
+        public SetWallpaperTask(Context context) {
+            this.context=context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage(getString(R.string.setting_wp));
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(AsyncTaskParams... params) {
+            String result = null;
+            String[] colors = params[0].colors;
+            ArrayList<String> colorsList = new ArrayList(Arrays.asList(colors));
+            int operation = params[0].operation;
+            if (operation == SET_GRADIENT) {
+                Log.d("doInBg", "colors: " + params[0].colors + ", op: " + params[0].operation);
+                setGradientWallpaper(colorsList);
+                result = getString(R.string.toast_wallpaper_set_to_gradient);
+            }
+            if (operation == SET_PLASMA) {
+                Log.d("doInBg", "colors: " + params[0].colors + ", op: " + params[0].operation);
+                setPlasmaWallpaper(colorsList);
+                result = getString(R.string.toast_wallpaper_set_to_plasma);
+            }
+            return result;
+        }
+
+        protected void onProgressUpdate() {
+            //setProgressPercent(progress[0]);
+        }
+
+        protected void onPostExecute(String result) {
+            progressDialog.dismiss();
+            Toast toast = Toast.makeText(ColorsActivity.this, result, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
     }
 
@@ -368,5 +528,59 @@ public class ColorsActivity extends ActionBarActivity {
             bitmapArray[i] = colorValue;
         }
         return Bitmap.createBitmap(bitmapArray, size, size, Bitmap.Config.ARGB_8888);
+    }
+
+    public Bitmap generateNoise() {
+        Bitmap resultBitmap;
+        String fileName = "noise.png";
+        String filePath = this.getFilesDir().getAbsolutePath() + File.separator + fileName;
+        File file = new File(filePath);
+        if (file.exists()) {
+            // File exists, use it.
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            resultBitmap = BitmapFactory.decodeFile(filePath, options);
+            Log.d("generateNoise", "bitmap exists, loading");
+        } else {
+            // File does not exist, generate new one.
+            int width = NOISE_BITMAP_SIZE;
+            int height = NOISE_BITMAP_SIZE;
+            Log.d("generateNoise", "generating new noise bitmap (" + width + "x" + height + ")");
+            int[] pixels = new int[width * height];
+            Random random = new Random();
+            for (int i = 0; i < width * height; i++) {
+                // Fill with black pixels with random opacity ranging from 0 to NOISE_SPREAD.
+                int noise = random.nextInt(NOISE_SPREAD);
+                pixels[i] = Color.argb(noise, 0, 0, 0);
+            }
+            resultBitmap = Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888);
+            // Save noise bitmap for future use.
+            FileOutputStream out = null;
+            try {
+                out = new FileOutputStream(filePath);
+                resultBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (out != null) {
+                        out.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return resultBitmap;
+    }
+
+    public Bitmap addNoise(Bitmap source) {
+        Canvas canvas = new Canvas(source);
+        Bitmap noise = generateNoise();
+        Shader noiseShader = new BitmapShader(noise, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+        Paint paint = new Paint();
+        paint.setShader(noiseShader);
+        canvas.drawRect(0, 0, source.getWidth(), source.getHeight(), paint);
+        return source;
     }
 }

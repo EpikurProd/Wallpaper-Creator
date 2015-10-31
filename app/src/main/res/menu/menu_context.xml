@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_create_blur"
+        android:id="@+id/action_create_gradient"
         android:title="@string/action_blur"
         android:icon="@drawable/ic_action_diagonal_gradient" />
+    <item
+        android:id="@+id/action_create_plasma"
+        android:title="@string/action_plasma"
+        android:icon="@drawable/ic_action_plasma" />
 </menu>

@@ -16,7 +16,7 @@
     </plurals>
 
     <string name="dialog_add_color_title">Добавить цвет</string>
-    <string name="dialog_add_color_msg">Шестнадцатеричный код (#ККЗЗСС)</string>
+    <string name="dialog_add_color_msg">Введите код цвета (#ККЗЗСС)</string>
 
     <string name="label_cancel">Отмена</string>
     <string name="label_ok">ОК</string>
@@ -24,6 +24,9 @@
     <string name="toast_fav_added">Добавлен в избранное</string>
     <string name="toast_fav_removed">Удалён из избранного</string>
     <string name="toast_invalid_color">Неверный код цвета</string>
-    <string name="toast_wallpaper_set_to_blur">Установлены градиентные обои</string>
-    <string name="toast_wallpaper_set_to_color">Установлены однотонные обои</string>
+    <string name="toast_wallpaper_set_to_gradient">Градиентные обои установлены</string>
+    <string name="toast_wallpaper_set_to_color">Однотонные обои установлены</string>
+    <string name="setting_wp">Обои создаются</string>
+    <string name="action_plasma">Создать обои "плазма"</string>
+    <string name="toast_wallpaper_set_to_plasma">Обои "плазма" установлены</string>
 </resources>
