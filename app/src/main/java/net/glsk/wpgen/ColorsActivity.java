@@ -61,7 +61,7 @@ import java.util.Random;
 
 public class ColorsActivity extends AppCompatActivity {
 
-    public
+    private
     GridView gridview;
     ArrayList<String> favsList = new ArrayList<>();
     ArrayList<String> allList = new ArrayList<>();
@@ -371,7 +371,7 @@ public class ColorsActivity extends AppCompatActivity {
         }
     }
 
-    public class MultiChoiceModeListener implements
+    private class MultiChoiceModeListener implements
             GridView.MultiChoiceModeListener {
 
         @Override
