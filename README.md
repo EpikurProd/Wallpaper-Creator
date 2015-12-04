@@ -18,6 +18,8 @@ This app is designed for Android 4.0.3 and later.
 [t5]: http://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-20-45-180x300.png
 [6]: http://glsk.net/wp-content/uploads/2015/10/Screenshot_2015-10-31-18-01-33.png
 [t6]: http://glsk.net/wp-content/uploads/2015/10/Screenshot_2015-10-31-18-01-33-180x300.png
+[7]: https://glsk.net/wp-content/uploads/2015/12/Screenshot_20151129-225356.png
+[t7]: https://glsk.net/wp-content/uploads/2015/12/Screenshot_20151129-225356-180x300.png
 
 ## Download
 
