@@ -1,5 +1,5 @@
 # WPGen
-Android app which can generate solid color, diagonal gradient or plasma effect static multicolor wallpapers. You can choose from a number of pre-defined colors or add your own.
+Android app which can generate solid color, and multicolor (gradient, plasma, etc.) wallpapers. You can choose from a number of pre-defined colors or add your own.
 
 This app is designed for Android 4.0.3 and later.
 
@@ -27,6 +27,10 @@ This app is designed for Android 4.0.3 and later.
 [10]: https://f-droid.org/repository/browse/?fdid=net.glsk.wpgen
 
 ## Changelog
+
+1.2
+
+ * Added diagonal stripes generator.
 
 1.1
 

@@ -8,4 +8,8 @@
         android:id="@+id/action_create_plasma"
         android:title="@string/action_plasma"
         android:icon="@drawable/ic_action_plasma" />
+    <item
+        android:id="@+id/action_create_stripes"
+        android:title="@string/action_stripes"
+        android:icon="@drawable/ic_action_diagonal_mat" />
 </menu>

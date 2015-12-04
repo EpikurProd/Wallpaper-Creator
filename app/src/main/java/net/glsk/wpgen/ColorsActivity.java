@@ -34,8 +34,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -60,7 +59,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class ColorsActivity extends ActionBarActivity {
+public class ColorsActivity extends AppCompatActivity {
 
     public
     GridView gridview;
@@ -73,6 +72,7 @@ public class ColorsActivity extends ActionBarActivity {
 
     static final int SET_GRADIENT = 1;
     static final int SET_PLASMA = 2;
+    static final int SET_STRIPES = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +165,7 @@ public class ColorsActivity extends ActionBarActivity {
     protected void setGradientWallpaper(ArrayList<String> colors) {
         WallpaperManager wpManager = WallpaperManager.getInstance(this.getApplicationContext());
         // Use full screen size so wallpaper is movable.
-        int height = (int) (wpManager.getDesiredMinimumHeight());
+        int height = wpManager.getDesiredMinimumHeight();
         // Create square bitmap for wallpaper.
         Bitmap wallpaperBitmap = Bitmap.createBitmap(height, height, Bitmap.Config.ARGB_8888);
         // Prepare colors for gradient.
@@ -231,20 +231,18 @@ public class ColorsActivity extends ActionBarActivity {
         double period1 = period - spread + spread*random.nextFloat();
         double period2 = period - spread + spread*random.nextFloat();
         double period3 = period - spread + spread*random.nextFloat();
-        for(int x = 0; x < width; x++)
-            for(int y = 0; y < height; y++)
-            {
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++) {
                 // Adding sines to get plasma value.
                 int value = (int)
-                (
-                        128.0 + (128.0 * Math.sin(x / period1))
-                                + 128.0 + (128.0 * Math.sin(y / period2))
-                                + 128.0 + (128.0 * Math.sin((x + y) / period1))
-                                + 128.0 + (128.0 * Math.sin(Math.sqrt((double) (x * x + y * y)) / period3))
-                ) / 4;
+                        (
+                                128.0 + (128.0 * Math.sin(x / period1))
+                                        + 128.0 + (128.0 * Math.sin(y / period2))
+                                        + 128.0 + (128.0 * Math.sin((x + y) / period1))
+                                        + 128.0 + (128.0 * Math.sin(Math.sqrt((double) (x * x + y * y)) / period3))
+                        ) / 4;
                 plasma[x][y] = value;
             }
-
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++) {
                 int color = palette[plasma[x][y] % 256];
@@ -260,6 +258,74 @@ public class ColorsActivity extends ActionBarActivity {
             e.printStackTrace();
         }
         // Cleanup.
+        wallpaperBitmap.recycle();
+    }
+
+    // Set wallpaper to diagonal stripes pattern.
+    protected void setStripesWallpaper(ArrayList<String> colors) {
+        WallpaperManager wpManager = WallpaperManager.getInstance(this.getApplicationContext());
+        // Use full screen size so wallpaper is movable.
+        int smallHeight = wpManager.getDesiredMinimumHeight();
+        int smallWidth = smallHeight;
+        // Big height to account for rotation.
+        int bigHeight = 2*smallHeight;
+        int bigWidth = bigHeight;
+        // Medium height for color distribution.
+        int middleHeight = (int) ((2*smallHeight)/Math.sqrt(2));
+        // Offset for cropping.
+        int offset = (bigHeight - middleHeight) / 2;
+        // Create square bitmap for wallpaper.
+        Bitmap bigBitmap = Bitmap.createBitmap(bigWidth, bigHeight, Bitmap.Config.ARGB_8888);
+        // Prepare colors.
+        int[] colorsInt = new int[colors.size()];
+        for (int i = 0; i < colors.size(); i++) {
+            colorsInt[i] = Color.parseColor(colors.get(i));
+        }
+        Canvas c = new Canvas(bigBitmap);
+        // Rotate canvas before drawing.
+        c.save();
+        c.rotate(-45, c.getWidth() / 2, c.getHeight() / 2);
+        Paint paint = new Paint();
+        float initStripeHeight = middleHeight / colors.size();
+        float initShadowHeight = (float) (middleHeight * 0.012);
+        int stripeSpread = (int) (initStripeHeight * 0.25);  // Vary stripe height a bit.
+        float shadowSpread = initShadowHeight * 0.5f;  // Vary shadow thickness too.
+        for (int i = colors.size() - 1; i >= 0; i--) {  // Going upwards.
+            int stripeHeight;
+            float shadowThickness;
+            if (i == colors.size() - 1) {  // Fill whole canvas with last color.
+                stripeHeight = bigHeight;
+                shadowThickness = 0;
+            } else {
+                stripeHeight = Math.round((i + 1) * initStripeHeight);
+                int dh = (int) (stripeSpread * Math.random() - stripeSpread / 2);
+                stripeHeight = offset + stripeHeight + dh;
+                if (stripeHeight < 0) stripeHeight = 0;
+                if (stripeHeight > bigHeight) stripeHeight = bigHeight;
+                float ds = (float) (shadowSpread * Math.random() - shadowSpread / 2);
+                shadowThickness = Math.max(1, initShadowHeight + ds);
+            }
+            paint.setColor(colorsInt[i]);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setShadowLayer(shadowThickness, 0.0f, 0.0f, 0xFF000000);
+            c.drawRect(0, 0, bigWidth, stripeHeight, paint);
+        }
+        // Rotate canvas back.
+        c.restore();
+        //  Crop to screen size.
+        int x = (c.getWidth() - smallWidth)/2;
+        int y = (c.getHeight() - smallHeight)/2;
+        Bitmap wallpaperBitmap = Bitmap.createBitmap(bigBitmap, x, y, smallWidth, smallHeight);
+        // Add noise.
+        //addNoise(wallpaperBitmap);
+        try {
+            // Set wallpaper.
+            wpManager.setBitmap(wallpaperBitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Cleanup.
+        bigBitmap.recycle();
         wallpaperBitmap.recycle();
     }
 
@@ -313,9 +379,11 @@ public class ColorsActivity extends ActionBarActivity {
             if (selectedList.size() > 1) {
                 menu.findItem(R.id.action_create_gradient).setVisible(true);
                 menu.findItem(R.id.action_create_plasma).setVisible(true);
+                menu.findItem(R.id.action_create_stripes).setVisible(true);
             } else {
                 menu.findItem(R.id.action_create_gradient).setVisible(false);
                 menu.findItem(R.id.action_create_plasma).setVisible(false);
+                menu.findItem(R.id.action_create_stripes).setVisible(false);
             }
             return true;
         }
@@ -330,14 +398,18 @@ public class ColorsActivity extends ActionBarActivity {
                     //setGradientWallpaper(selectedList);
                     params = new AsyncTaskParams(selectedArray, SET_GRADIENT);
                     asyncTask = new SetWallpaperTask(ColorsActivity.this);
-                    Log.d("onClick", "colors: " + params.colors);
                     asyncTask.execute(params);
                     mode.finish();
                     return true;
                 case R.id.action_create_plasma:
                     params = new AsyncTaskParams(selectedArray, SET_PLASMA);
                     asyncTask = new SetWallpaperTask(ColorsActivity.this);
-                    Log.d("onClick", "colors: " + params.colors);
+                    asyncTask.execute(params);
+                    mode.finish();
+                    return true;
+                case R.id.action_create_stripes:
+                    params = new AsyncTaskParams(selectedArray, SET_STRIPES);
+                    asyncTask = new SetWallpaperTask(ColorsActivity.this);
                     asyncTask.execute(params);
                     mode.finish();
                     return true;
@@ -410,14 +482,16 @@ public class ColorsActivity extends ActionBarActivity {
             ArrayList<String> colorsList = new ArrayList(Arrays.asList(colors));
             int operation = params[0].operation;
             if (operation == SET_GRADIENT) {
-                Log.d("doInBg", "colors: " + params[0].colors + ", op: " + params[0].operation);
                 setGradientWallpaper(colorsList);
                 result = getString(R.string.toast_wallpaper_set_to_gradient);
             }
             if (operation == SET_PLASMA) {
-                Log.d("doInBg", "colors: " + params[0].colors + ", op: " + params[0].operation);
                 setPlasmaWallpaper(colorsList);
                 result = getString(R.string.toast_wallpaper_set_to_plasma);
+            }
+            if (operation == SET_STRIPES) {
+                setStripesWallpaper(colorsList);
+                result = getString(R.string.toast_wallpaper_set_to_stripes);
             }
             return result;
         }
@@ -540,12 +614,10 @@ public class ColorsActivity extends ActionBarActivity {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
             resultBitmap = BitmapFactory.decodeFile(filePath, options);
-            Log.d("generateNoise", "bitmap exists, loading");
         } else {
             // File does not exist, generate new one.
             int width = NOISE_BITMAP_SIZE;
             int height = NOISE_BITMAP_SIZE;
-            Log.d("generateNoise", "generating new noise bitmap (" + width + "x" + height + ")");
             int[] pixels = new int[width * height];
             Random random = new Random();
             for (int i = 0; i < width * height; i++) {

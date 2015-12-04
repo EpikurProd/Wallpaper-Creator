@@ -5,8 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="action_add_to_favs">Add to favorites</string>
     <string name="action_remove_from_favs">Remove from favorites</string>
-    <string name="action_blur">Create gradient wallpaper</string>
-    <string name="action_plasma">Create plasma wallpaper</string>
+    <string name="action_blur">Gradient</string>
+    <string name="action_plasma">Plasma</string>
+    <string name="action_stripes">Stripes</string>
     <string name="action_add_color">Add color</string>
 
     <plurals name="plurals_colors">
@@ -19,6 +20,7 @@
     <string name="toast_wallpaper_set_to_color">Wallpaper set to color</string>
     <string name="toast_wallpaper_set_to_gradient">Wallpaper set to gradient</string>
     <string name="toast_wallpaper_set_to_plasma">Wallpaper set to plasma</string>
+    <string name="toast_wallpaper_set_to_stripes">Wallpaper set to stripes</string>
     <string name="toast_invalid_color">Invalid color code</string>
 
     <string name="dialog_add_color_title">Add color</string>
@@ -27,4 +29,5 @@
     <string name="label_ok">OK</string>
     <string name="label_cancel">Cancel</string>
     <string name="setting_wp">Creating wallpaper</string>
+
 </resources>

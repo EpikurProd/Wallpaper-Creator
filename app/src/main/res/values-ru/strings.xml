@@ -4,7 +4,7 @@
 
     <string name="action_add_color">Добавить цвет</string>
     <string name="action_add_to_favs">В избранное</string>
-    <string name="action_blur">Создать градиентные обои</string>
+    <string name="action_blur">Градиент</string>
     <string name="action_remove_from_favs">Удалить из избранного</string>
     <string name="action_settings">Настройки</string>
 
@@ -24,9 +24,11 @@
     <string name="toast_fav_added">Добавлен в избранное</string>
     <string name="toast_fav_removed">Удалён из избранного</string>
     <string name="toast_invalid_color">Неверный код цвета</string>
-    <string name="toast_wallpaper_set_to_gradient">Градиентные обои установлены</string>
+    <string name="toast_wallpaper_set_to_gradient">Обои «градиент» установлены</string>
     <string name="toast_wallpaper_set_to_color">Однотонные обои установлены</string>
     <string name="setting_wp">Обои создаются</string>
-    <string name="action_plasma">Создать обои "плазма"</string>
-    <string name="toast_wallpaper_set_to_plasma">Обои "плазма" установлены</string>
+    <string name="action_plasma">Плазма</string>
+    <string name="toast_wallpaper_set_to_plasma">Обои «плазма» установлены</string>
+    <string name="action_stripes">Полосы</string>
+    <string name="toast_wallpaper_set_to_stripes">Обои «полосы» установлены</string>
 </resources>
