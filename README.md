@@ -5,7 +5,7 @@ This app is designed for Android 4.0.3 and later.
 
 ## Screenshots
 
-[![t1]][1] [![t2]][2] [![t3]][3] [![t4]][4] [![t5]][5] [![t6]][6]
+[![t1]][1] [![t2]][2] [![t3]][3] [![t4]][4] [![t5]][5] [![t6]][6] [![t7]][7]
 [1]: http://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-06.png
 [t1]: http://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-06-180x300.png
 [2]: http://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-31.png
