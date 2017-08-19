@@ -9,6 +9,7 @@
     <string name="action_plasma">Plasma</string>
     <string name="action_stripes">Stripes</string>
     <string name="action_add_color">Add color</string>
+    <string name="action_save_last">Save last wallpaper</string>
 
     <plurals name="plurals_colors">
         <item quantity="one">%d color selected</item>
@@ -22,6 +23,9 @@
     <string name="toast_wallpaper_set_to_plasma">Wallpaper set to plasma</string>
     <string name="toast_wallpaper_set_to_stripes">Wallpaper set to stripes</string>
     <string name="toast_invalid_color">Invalid color code</string>
+    <string name="toast_saved_to_pics">Wallpaper saved to Pictures</string>
+    <string name="toast_permission_not_granted">Write permission not granted!</string>
+    <string name="toast_cannot_mkdir">Cannot create directory in Pictures!</string>
 
     <string name="dialog_add_color_title">Add color</string>
     <string name="dialog_add_color_msg">Add color (#RRGGBB)</string>

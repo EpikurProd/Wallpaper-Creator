@@ -17,12 +17,15 @@
 
 package net.glsk.wpgen;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,8 +35,12 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ActionMode;
 import android.view.Gravity;
@@ -53,10 +60,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Random;
 
 public class ColorsActivity extends AppCompatActivity {
@@ -103,6 +114,19 @@ public class ColorsActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        MenuItem saveLastItem = menu.findItem(R.id.action_save_last);
+
+        // Show Save Last menu if there's wallpaper to save.
+        if (new File(this.getFilesDir(), "lastwlp.png").exists()) {
+            saveLastItem.setEnabled(true);
+        } else {
+            saveLastItem.setEnabled(false);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks.
         switch (item.getItemId()) {
@@ -140,8 +164,56 @@ public class ColorsActivity extends AppCompatActivity {
                 });
                 addColorDialog.show();
                 return true;
+            case R.id.action_save_last: // Save last wallpaper to a file.
+                // Check for write permission.
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+                } else {
+                    // Permission was already granted.
+                    saveLastWallpaper();
+                }
+
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 123: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    saveLastWallpaper();
+                } else {
+                    Toast.makeText(ColorsActivity.this, getString(R.string.toast_permission_not_granted), Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+
+    private void saveLastWallpaper() {
+        File source = new File(this.getFilesDir(), "lastwlp.png");
+        File picturesDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "WPGen");
+        if (!picturesDir.exists()) {
+            if (!picturesDir.mkdirs()) {
+                Toast.makeText(ColorsActivity.this, getString(R.string.toast_cannot_mkdir), Toast.LENGTH_SHORT).show();
+            }
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String filename = "wpgen_" + sdf.format(new Date()) + ".png";
+        File dest = new File(picturesDir, filename);
+        try {
+            copyFile(source, dest);
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(dest)));
+            Toast.makeText(ColorsActivity.this, getString(R.string.toast_saved_to_pics), Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -150,15 +222,11 @@ public class ColorsActivity extends AppCompatActivity {
         // Create small solid color bitmap.
         Bitmap bitmap = createBitmap(color, 512);
         WallpaperManager wpManager = WallpaperManager.getInstance(this.getApplicationContext());
-        try {
-            wpManager.setBitmap(bitmap);
-            String text = getString(R.string.toast_wallpaper_set_to_color);
-            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setBitmapAsWallpaper(wpManager, bitmap);
+        String text = getString(R.string.toast_wallpaper_set_to_color);
+        Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     // Set wallpaper to gradient image.
@@ -182,12 +250,7 @@ public class ColorsActivity extends AppCompatActivity {
         c.drawRect(0, 0, height, height, paint);
         // Add noise.
         //addNoise(wallpaperBitmap);
-        try {
-            // Set wallpaper.
-            wpManager.setBitmap(wallpaperBitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setBitmapAsWallpaper(wpManager, wallpaperBitmap);
         // Cleanup.
         wallpaperBitmap.recycle();
     }
@@ -196,7 +259,7 @@ public class ColorsActivity extends AppCompatActivity {
     protected void setPlasmaWallpaper(ArrayList<String> colors) {
         WallpaperManager wpManager = WallpaperManager.getInstance(this.getApplicationContext());
         // Use half screen size for speed.
-        int height = wpManager.getDesiredMinimumHeight()/2;
+        int height = wpManager.getDesiredMinimumHeight()/4;
         int width = height;
         // Create wallpaper bitmap.
         Bitmap wallpaperBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -251,12 +314,7 @@ public class ColorsActivity extends AppCompatActivity {
         // TODO: Add noise as option in Settings.
         //addNoise(wallpaperBitmap);
         wallpaperBitmap = Bitmap.createScaledBitmap(wallpaperBitmap, wpManager.getDesiredMinimumHeight(), wpManager.getDesiredMinimumHeight(), true);
-        try {
-            // Set wallpaper.
-            wpManager.setBitmap(wallpaperBitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setBitmapAsWallpaper(wpManager, wallpaperBitmap);
         // Cleanup.
         wallpaperBitmap.recycle();
     }
@@ -318,15 +376,25 @@ public class ColorsActivity extends AppCompatActivity {
         Bitmap wallpaperBitmap = Bitmap.createBitmap(bigBitmap, x, y, smallWidth, smallHeight);
         // Add noise.
         //addNoise(wallpaperBitmap);
-        try {
-            // Set wallpaper.
-            wpManager.setBitmap(wallpaperBitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setBitmapAsWallpaper(wpManager, wallpaperBitmap);
         // Cleanup.
         bigBitmap.recycle();
         wallpaperBitmap.recycle();
+    }
+
+    public void setBitmapAsWallpaper(WallpaperManager wpManager, Bitmap wallpaperBitmap) {
+        try {
+            // Set wallpaper.
+            wpManager.setBitmap(wallpaperBitmap);
+            // Write to temp file (to enable saving).
+            File tempfile = new File(this.getFilesDir(), "lastwlp.png");
+            FileOutputStream outStream = new FileOutputStream(tempfile);
+            wallpaperBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            // Enable Save menu option if inactive.
+            invalidateOptionsMenu();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Load favorites from app settings.
@@ -655,4 +723,24 @@ public class ColorsActivity extends AppCompatActivity {
         canvas.drawRect(0, 0, source.getWidth(), source.getHeight(), paint);
         return source;
     }
+
+    private void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!sourceFile.exists()) {
+            return;
+        }
+        FileChannel source = null;
+        FileChannel destination = null;
+        source = new FileInputStream(sourceFile).getChannel();
+        destination = new FileOutputStream(destFile).getChannel();
+        if (destination != null && source != null) {
+            destination.transferFrom(source, 0, source.size());
+        }
+        if (source != null) {
+            source.close();
+        }
+        if (destination != null) {
+            destination.close();
+        }
+    }
+
 }

@@ -7,6 +7,7 @@
     <string name="action_blur">Градиент</string>
     <string name="action_remove_from_favs">Удалить из избранного</string>
     <string name="action_settings">Настройки</string>
+    <string name="action_save_last">Сохранить последние обои</string>
 
     <plurals name="plurals_colors">
         <item quantity="one">Выбран %d цвет</item>
@@ -31,4 +32,7 @@
     <string name="toast_wallpaper_set_to_plasma">Обои «плазма» установлены</string>
     <string name="action_stripes">Полосы</string>
     <string name="toast_wallpaper_set_to_stripes">Обои «полосы» установлены</string>
+    <string name="toast_saved_to_pics">Обои сохранены в папку Pictures</string>
+    <string name="toast_permission_not_granted">Не получено разрешение на запись файла!</string>
+    <string name="toast_cannot_mkdir">Невозможно создать папку в Pictures!</string>
 </resources>
