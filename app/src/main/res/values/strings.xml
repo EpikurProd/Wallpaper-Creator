@@ -9,7 +9,7 @@
     <string name="action_plasma">Plasma</string>
     <string name="action_stripes">Stripes</string>
     <string name="action_add_color">Add color</string>
-    <string name="action_save_last">Save last wallpaper</string>
+    <string name="action_save_last">Export last wallpaper</string>
 
     <plurals name="plurals_colors">
         <item quantity="one">%d color selected</item>

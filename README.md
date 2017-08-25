@@ -30,6 +30,10 @@ This app is designed for Android 4.0.3 and later.
 
 ## Changelog
 
+1.3.2
+
+ * String and GitHub fixes.
+
 1.3.1
 
  * Added Save last wallpaper feature.

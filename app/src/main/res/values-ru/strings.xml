@@ -7,7 +7,7 @@
     <string name="action_blur">Градиент</string>
     <string name="action_remove_from_favs">Удалить из избранного</string>
     <string name="action_settings">Настройки</string>
-    <string name="action_save_last">Сохранить последние обои</string>
+    <string name="action_save_last">Экспортировать последние обои</string>
 
     <plurals name="plurals_colors">
         <item quantity="one">Выбран %d цвет</item>
