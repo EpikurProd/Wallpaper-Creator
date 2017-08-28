@@ -7,7 +7,7 @@
     <item name="background" type="color">#bdbdbd</item>
     <item name="transparent" type="color">#00000000</item>
 
-    <string-array name="colors_array">
+    <string-array name="colors_array" translatable="false">
         <!-- Material -->
         <item>#F44336</item>
         <item>#E91E63</item>
