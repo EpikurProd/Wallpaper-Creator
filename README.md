@@ -1,60 +1,48 @@
-# WPGen
-Android app which can generate solid color, and multicolor (gradient, plasma, etc.) wallpapers. You can choose from a number of pre-defined colors or add your own.
+# Wallpaper Creator
+This app is a modified version from WPGen from Glesik under Licence GNU GPL 3.0 (https://github.com/glesik/wpgen). Thanks to him to autorized me to use it.
+
+This Android app which can generate wallpaper with differents style :
+
+- Solid color wallpaper
+- Gradient wallpaper (>2 colors)
+- Plasma wallpaper (>2 colors)
+- Stripes wallpaper (>2 colors)
+Many colors are pre-defined, you can add yours or select as favorite.
 
 This app is designed for Android 4.0.3 and later.
 
 ## Screenshots
 
-[![t1]][1] [![t2]][2] [![t3]][3] [![t4]][4] [![t5]][5] [![t6]][6] [![t7]][7]
-[1]: https://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-06.png
-[t1]: https://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-06-180x300.png
-[2]: https://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-31.png
-[t2]: https://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-31-180x300.png
-[3]: https://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-56.png
-[t3]: https://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-15-56-180x300.png
-[4]: https://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-16-25.png
-[t4]: https://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-16-25-180x300.png
-[5]: https://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-20-45.png
-[t5]: https://glsk.net/wp-content/uploads/2015/02/Screenshot_2015-02-15-17-20-45-180x300.png
-[6]: https://glsk.net/wp-content/uploads/2015/10/Screenshot_2015-10-31-18-01-33.png
-[t6]: https://glsk.net/wp-content/uploads/2015/10/Screenshot_2015-10-31-18-01-33-180x300.png
-[7]: https://glsk.net/wp-content/uploads/2015/12/Screenshot_20151129-225356.png
-[t7]: https://glsk.net/wp-content/uploads/2015/12/Screenshot_20151129-225356-180x300.png
+Soon ...
 
 ## Download
 
-[![t10]][10]
+[![t1]][1]
 
-[t10]: https://glsk.net/wp-content/uploads/2013/08/get_it_on_f-droid_45.png
-[10]: https://f-droid.org/repository/browse/?fdid=net.glsk.wpgen
+[t1]: https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png
+[1]: https://play.google.com/store/apps/details?id=com.epikurprod.wallpapercreator
 
 ## Changelog
 
-1.3.2
+1.0.0
 
- * String and GitHub fixes.
+-Initial upload to be agree with Licence GNU GPL 3.0
+-Changed package name "com.epikurprod.wallpapercreatorpro"
+-Changed version to match with modified version
+-Improved Theme App Colors.
+-Added many colors to pick.
 
-1.3.1
+## Support
 
- * Added Save last wallpaper feature.
+If you like this version, you can purchase Pro version :
+[![t2]][2]
 
-1.2
+[t2]: https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png
+[2]: https://play.google.com/store/apps/details?id=com.epikurprod.wallpapercreator.pro
 
- * Added diagonal stripes generator.
+Or Check original project and make a donation to this creator :
 
-1.1
-
- * Added basic plasma effect generator.
- * Increased gradient wallpaper size to allow scrolling.
- * Added progress dialog.
-
-1.0
-
- * Initial release.
-
-## Donations
-
-Bitcoin: [`1LDg59hWfPLXGocbuBDRmw2y5VeycDKgnv`](bitcoin:1LDg59hWfPLXGocbuBDRmw2y5VeycDKgnv?label=glsk/wpgen)
+https://github.com/glesik/wpgen
 
 ## License
 
