@@ -17,10 +17,7 @@ Soon ...
 
 ## Download
 
-[![t1]][1]
-
-[t1]: https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png
-[1]: https://play.google.com/store/apps/details?id=com.epikurprod.wallpapercreator
+<a href='https://play.google.com/store/apps/details?id=com.epikurprod.wallpapercreator&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 ## Changelog
 
@@ -35,10 +32,7 @@ Soon ...
 ## Support
 
 If you like this version, you can purchase Pro version :
-[![t2]][2]
-
-[t2]: https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png
-[2]: https://play.google.com/store/apps/details?id=com.epikurprod.wallpapercreator.pro
+<a href='https://play.google.com/store/apps/details?id=com.epikurprod.wallpapercreator.pro&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 Or Check original project and make a donation to this creator :
 
