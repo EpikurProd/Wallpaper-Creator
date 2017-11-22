@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wallpaper Creator Pro</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="action_add_to_favs">Ajouter aux favoris</string>
+    <string name="action_remove_from_favs">Supprimé des favoris</string>
+    <string name="action_blur">Dégradé</string>
+    <string name="action_plasma">Plasma</string>
+    <string name="action_stripes">Bandes</string>
+    <string name="action_add_color">Ajoutez une couleur</string>
+    <string name="action_save_last">Exporter le dernier fond d\'écran</string>
+    <plurals name="plurals_colors">
+        <item quantity="one">%d couleur selectionné</item>
+        <item quantity="other">%d couleurs selectionnés</item>
+    </plurals>
+    <string name="toast_fav_added">Ajouté en favoris</string>
+    <string name="toast_fav_removed">Retiré des favoris</string>
+    <string name="toast_wallpaper_set_to_color">Fond d\'écran de couleur appliqué</string>
+    <string name="toast_wallpaper_set_to_gradient">Fond d\'écran dégradé appliqué</string>
+    <string name="toast_wallpaper_set_to_plasma">Fond d\'écran plasma appliqué</string>
+    <string name="toast_wallpaper_set_to_stripes">Fond d\'écran avec bandes appliqué</string>
+    <string name="toast_invalid_color">Code couleur invalide</string>
+    <string name="toast_saved_to_pics">Fonds d\'écran sauvegardé dans Images</string>
+    <string name="toast_permission_not_granted">Permission en écriture refusé</string>
+    <string name="toast_cannot_mkdir">Impossible de créer un dossier dans Images</string>
+    <string name="dialog_add_color_title">Ajoutez une couleur</string>
+    <string name="dialog_add_color_msg">Ajoutez une couleur (#RRGGBB)</string>
+    <string name="label_ok">OK</string>
+    <string name="label_cancel">Annuler</string>
+    <string name="setting_wp">Création du fond d\'écran</string>
+</resources>

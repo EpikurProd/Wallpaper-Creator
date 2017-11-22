@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WPGen</string>
+    <string name="app_name">Wallpaper Creator Pro</string>
 
     <string name="action_add_color">Добавить цвет</string>
     <string name="action_add_to_favs">В избранное</string>
