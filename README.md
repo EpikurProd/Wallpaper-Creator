@@ -21,17 +21,9 @@ Soon ...
 
 ## Changelog
 
-1.0.0
+1.0.3
 
--Initial upload to be agree with Licence GNU GPL 3.0
-
--Changed package name "com.epikurprod.wallpapercreator.pro"
-
--Changed version to match with modified version
-
--Improved Theme App Colors.
-
--Added many colors to pick.
+- Cleaned code and update files
 
 ## Support
 
