@@ -120,7 +120,7 @@ public class ColorsActivity extends AppCompatActivity {
         MenuItem saveLastItem = menu.findItem(R.id.action_save_last);
 
         // Show Save Last menu if there's wallpaper to save.
-        if (new File(this.getFilesDir(), "lastwlp.png").exists()) {
+        if (new File(this.getFilesDir(), "lastwc.png").exists()) {
             saveLastItem.setEnabled(true);
         } else {
             saveLastItem.setEnabled(false);
@@ -199,16 +199,16 @@ public class ColorsActivity extends AppCompatActivity {
     }
 
     private void saveLastWallpaper() {
-        File source = new File(this.getFilesDir(), "lastwlp.png");
+        File source = new File(this.getFilesDir(), "lastwc.png");
         File picturesDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "WPGen");
+                Environment.DIRECTORY_PICTURES), "WallpaperCreator");
         if (!picturesDir.exists()) {
             if (!picturesDir.mkdirs()) {
                 Toast.makeText(ColorsActivity.this, getString(R.string.toast_cannot_mkdir), Toast.LENGTH_SHORT).show();
             }
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String filename = "wpgen_" + sdf.format(new Date()) + ".png";
+        String filename = "wallpaper_creator_" + sdf.format(new Date()) + ".png";
         File dest = new File(picturesDir, filename);
         try {
             copyFile(source, dest);
@@ -389,7 +389,7 @@ public class ColorsActivity extends AppCompatActivity {
             // Set wallpaper.
             wpManager.setBitmap(wallpaperBitmap);
             // Write to temp file (to enable saving).
-            File tempfile = new File(this.getFilesDir(), "lastwlp.png");
+            File tempfile = new File(this.getFilesDir(), "lastwc.png");
             FileOutputStream outStream = new FileOutputStream(tempfile);
             wallpaperBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
             // Enable Save menu option if inactive.
@@ -401,7 +401,7 @@ public class ColorsActivity extends AppCompatActivity {
 
     // Load favorites from app settings.
     protected void loadFavorites() {
-        SharedPreferences settings = getSharedPreferences("WPGenPrefs", 0);
+        SharedPreferences settings = getSharedPreferences("WallpaperCreatorPrefs", 0);
         int favsCount = settings.getInt("favorites", 0);
         for (int i = 0; i < favsCount; i++) {
             String fav = settings.getString("fav" + Integer.toString(i), "");
@@ -412,7 +412,7 @@ public class ColorsActivity extends AppCompatActivity {
 
     // Save favorites to app settings.
     protected void saveFavorites() {
-        SharedPreferences settings = getSharedPreferences("WPGenPrefs", 0);
+        SharedPreferences settings = getSharedPreferences("WallpaperCreatorPrefs", 0);
         int oldCount = settings.getInt("favorites", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("favorites", favsList.size());
